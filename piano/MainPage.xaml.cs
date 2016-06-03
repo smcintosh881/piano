@@ -22,9 +22,27 @@ namespace piano
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        MediaElement beep;
+
+
         public MainPage()
         {
             this.InitializeComponent();
+            beep = new MediaElement();
+            this.setMedia();
+        }
+
+        private async void setMedia()
+        {
+            Windows.Storage.StorageFolder folder = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFolderAsync("Assets");
+            Windows.Storage.StorageFile file = await folder.GetFileAsync("beep.wav");
+            var stream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read);
+            beep.SetSource(stream, file.ContentType);
+        }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            beep.Play();
         }
     }
 }
