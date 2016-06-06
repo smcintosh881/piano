@@ -40,9 +40,39 @@ namespace piano
             beep.SetSource(stream, file.ContentType);
         }
 
-        private void button_Click(object sender, RoutedEventArgs e)
+        private void button_C(object sender, RoutedEventArgs e)
         {
             beep.Play();
+        }
+
+        private void button_D(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void button_E(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void button_F(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void button_G(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void button_A(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void button_B(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
