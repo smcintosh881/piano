@@ -1,17 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
+using System.Threading;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -24,13 +14,32 @@ namespace piano
     {
         MediaElement beep;
 
+        private LampHelper lampHelper;
+        private bool lampFound = false;
+
+        private static Timer loopTimer;
+        private Button formButton;
+
 
         public MainPage()
         {
             this.InitializeComponent();
             beep = new MediaElement();
             this.setMedia();
+
+            lampHelper = new LampHelper();
+            lampHelper.LampFound += LampHelper_LampFound;
+
+           // loopTimer = new Timer(button_C, null, 300, 300);
+           
+
+        
         }
+
+
+
+
+
 
         private async void setMedia()
         {
@@ -40,10 +49,47 @@ namespace piano
             beep.SetSource(stream, file.ContentType);
         }
 
+
+        private void LampHelper_LampFound(object sender, EventArgs e)
+        {
+            lampFound = true;
+            GetLampState();
+        }
+
+        private async void GetLampState()
+        {
+            if (lampFound)
+            {
+                // Get the current On/Off state of the lamp.
+                c_button.IsPressed.Equals(await lampHelper.GetOnOffAsync());
+            }
+        }
+
+        private void c_button_PointerPressed(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+
+        }
+
+        private void c_button_PointerReleased(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+
+        }
+        
+        //where the light is turned On
         private void button_C(object sender, RoutedEventArgs e)
         {
-            beep.Play();
+            if (lampFound)
+            {
+                lampHelper.SetOnOffAsync(true);
+                beep.Play();
+                
+                //turns lamp off
+                //lampHelper.SetOnOffAsync(false);
+            } 
         }
+
+
+
 
         private void button_D(object sender, RoutedEventArgs e)
         {
@@ -74,5 +120,6 @@ namespace piano
         {
 
         }
+
     }
 }
