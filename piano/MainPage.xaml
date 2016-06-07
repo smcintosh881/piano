@@ -14,7 +14,7 @@
         <RepeatButton x:Name="f_button" Content="F" HorizontalAlignment="Left" BorderBrush="Black" VerticalAlignment="Top" Height="360" Width="91" Margin="276,0,0,0" Delay="100" Interval="100" Click="f_button_click" ClickMode="Release"/>
         <RepeatButton x:Name="g_button" Content="G" HorizontalAlignment="Left" BorderBrush="Black" VerticalAlignment="Top" Height="360" Width="92" Margin="367,0,0,0" Delay="100" Interval="100" Click="g_button_click" ClickMode="Release"/>
         <RepeatButton x:Name="a_button" Content="A" HorizontalAlignment="Left" BorderBrush="Black" VerticalAlignment="Top" Height="360" Width="92" Margin="459,0,0,0" Delay="100" Interval="100" Click="a_button_click" ClickMode="Release"/>
-        <RepeatButton x:Name="B_button" Content="B" HorizontalAlignment="Left" BorderBrush="Black" VerticalAlignment="Top" Height="360" Width="91" Margin="551,0,-2,0" Delay="100" Interval="100" Click="b_button_click" ClickMode="Release"/>
+        <RepeatButton x:Name="b_button" Content="B" HorizontalAlignment="Left" BorderBrush="Black" VerticalAlignment="Top" Height="360" Width="91" Margin="551,0,-2,0" Delay="100" Interval="100" Click="b_button_click" ClickMode="Release"/>
 
     </Grid>
 </Page>

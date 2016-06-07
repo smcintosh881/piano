@@ -109,18 +109,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\A.wav" />
-    <Content Include="Assets\B.wav" />
-    <Content Include="Assets\beep.wav" />
-    <Content Include="Assets\B_b.wav" />
-    <Content Include="Assets\C.wav" />
-    <Content Include="Assets\C_#.wav" />
-    <Content Include="Assets\D.wav" />
     <Content Include="Assets\E.wav" />
-    <Content Include="Assets\E_b.wav" />
     <Content Include="Assets\F.wav" />
-    <Content Include="Assets\F_#.wav" />
+    <Content Include="Assets\F_s.wav" />
     <Content Include="Assets\G.wav" />
-    <Content Include="Assets\G_#.wav" />
+    <Content Include="Assets\G_s.wav" />
+    <Content Include="Assets\B_b.wav" />
+    <Content Include="Assets\B.wav" />
+    <Content Include="Assets\C_h.wav" />
+    <Content Include="Assets\C.wav" />
+    <Content Include="Assets\C_s.wav" />
+    <Content Include="Assets\D.wav" />
+    <Content Include="Assets\E_b.wav" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
