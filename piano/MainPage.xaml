@@ -8,13 +8,13 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Button x:Name="c_button" Content="C" HorizontalAlignment="Left" BorderBrush="Black" VerticalAlignment="Top" Click="button_C" Height="360" Width="92"/>
-        <Button x:Name="d_button" Content="D" HorizontalAlignment="Left" BorderBrush="Black" VerticalAlignment="Top" Click="button_D" Height="360" Width="92" Margin="92,0,0,0"/>
-        <Button x:Name="e_button" Content="E" HorizontalAlignment="Left" BorderBrush="Black" VerticalAlignment="Top" Click="button_E" Height="360" Width="92" Margin="184,0,0,0"/>
-        <Button x:Name="f_button" Content="F" HorizontalAlignment="Left" BorderBrush="Black" VerticalAlignment="Top" Click="button_F" Height="360" Width="91" Margin="276,0,0,0"/>
-        <Button x:Name="g_button" Content="G" HorizontalAlignment="Left" BorderBrush="Black" VerticalAlignment="Top" Click="button_G" Height="360" Width="92" Margin="367,0,0,0"/>
-        <Button x:Name="a_button" Content="A" HorizontalAlignment="Left" BorderBrush="Black" VerticalAlignment="Top" Click="button_A" Height="360" Width="92" Margin="459,0,0,0"/>
-        <Button x:Name="B_button" Content="B" HorizontalAlignment="Left" BorderBrush="Black" VerticalAlignment="Top" Click="button_B" Height="360" Width="91" Margin="551,0,-2,0"/>
+        <RepeatButton x:Name="c_button" Content="C" HorizontalAlignment="Left" BorderBrush="Black" VerticalAlignment="Top" Height="360" Width="92" Delay="100" Interval="100" Click="c_button_click" ClickMode="Release"/>
+        <RepeatButton x:Name="d_button" Content="D" HorizontalAlignment="Left" BorderBrush="Black" VerticalAlignment="Top" Height="360" Width="92" Margin="92,0,0,0" Delay="100" Interval="100" Click="d_button_click" ClickMode="Release"/>
+        <RepeatButton x:Name="e_button" Content="E" HorizontalAlignment="Left" BorderBrush="Black" VerticalAlignment="Top" Height="360" Width="92" Margin="184,0,0,0" Delay="100" Interval="100" Click="e_button_click" ClickMode="Release"/>
+        <RepeatButton x:Name="f_button" Content="F" HorizontalAlignment="Left" BorderBrush="Black" VerticalAlignment="Top" Height="360" Width="91" Margin="276,0,0,0" Delay="100" Interval="100" Click="f_button_click" ClickMode="Release"/>
+        <RepeatButton x:Name="g_button" Content="G" HorizontalAlignment="Left" BorderBrush="Black" VerticalAlignment="Top" Height="360" Width="92" Margin="367,0,0,0" Delay="100" Interval="100" Click="g_button_click" ClickMode="Release"/>
+        <RepeatButton x:Name="a_button" Content="A" HorizontalAlignment="Left" BorderBrush="Black" VerticalAlignment="Top" Height="360" Width="92" Margin="459,0,0,0" Delay="100" Interval="100" Click="a_button_click" ClickMode="Release"/>
+        <RepeatButton x:Name="B_button" Content="B" HorizontalAlignment="Left" BorderBrush="Black" VerticalAlignment="Top" Height="360" Width="91" Margin="551,0,-2,0" Delay="100" Interval="100" Click="b_button_click" ClickMode="Release"/>
 
     </Grid>
 </Page>
