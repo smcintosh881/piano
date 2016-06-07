@@ -67,7 +67,7 @@ namespace piano
             B_b.SetSource(await file.OpenAsync(Windows.Storage.FileAccessMode.Read), file.ContentType);
             file = await folder.GetFileAsync("C.wav");
             C.SetSource(await file.OpenAsync(Windows.Storage.FileAccessMode.Read), file.ContentType);
-            file = await folder.GetFileAsync("C_#.wav");
+            file = await folder.GetFileAsync("C_s.wav");
             C_s.SetSource(await file.OpenAsync(Windows.Storage.FileAccessMode.Read), file.ContentType);
             file = await folder.GetFileAsync("D.wav");
             D.SetSource(await file.OpenAsync(Windows.Storage.FileAccessMode.Read), file.ContentType);
@@ -77,11 +77,11 @@ namespace piano
             E_b.SetSource(await file.OpenAsync(Windows.Storage.FileAccessMode.Read), file.ContentType);
             file = await folder.GetFileAsync("F.wav");
             F.SetSource(await file.OpenAsync(Windows.Storage.FileAccessMode.Read), file.ContentType);
-            file = await folder.GetFileAsync("F_#.wav");
+            file = await folder.GetFileAsync("F_s.wav");
             F_s.SetSource(await file.OpenAsync(Windows.Storage.FileAccessMode.Read), file.ContentType);
             file = await folder.GetFileAsync("G.wav");
             G.SetSource(await file.OpenAsync(Windows.Storage.FileAccessMode.Read), file.ContentType);
-            file = await folder.GetFileAsync("G_#.wav");
+            file = await folder.GetFileAsync("G_s.wav");
             G_s.SetSource(await file.OpenAsync(Windows.Storage.FileAccessMode.Read), file.ContentType);
         }
 
@@ -118,34 +118,88 @@ namespace piano
             C.Play();
         }
 
-        private void d_button_click(object sender, RoutedEventArgs e)
+        private async void d_button_click(object sender, RoutedEventArgs e)
         {
-
+            if (consumer != null)
+            {
+                await consumer.SetOnOffAsync(true);
+                await consumer.SetHueAsync(colors[1]);
+                if (!d_button.IsPressed)
+                {
+                    turn_off();
+                }
+            }
+            D.Play();
         }
 
-        private void e_button_click(object sender, RoutedEventArgs e)
+        private async void e_button_click(object sender, RoutedEventArgs e)
         {
-
+            if (consumer != null)
+            {
+                await consumer.SetOnOffAsync(true);
+                await consumer.SetHueAsync(colors[2]);
+                if (!e_button.IsPressed)
+                {
+                    turn_off();
+                }
+            }
+            E.Play();
         }
 
-        private void f_button_click(object sender, RoutedEventArgs e)
+        private async void f_button_click(object sender, RoutedEventArgs e)
         {
-
+            if (consumer != null)
+            {
+                await consumer.SetOnOffAsync(true);
+                await consumer.SetHueAsync(colors[3]);
+                if (!f_button.IsPressed)
+                {
+                    turn_off();
+                }
+            }
+            F.Play();
         }
 
-        private void g_button_click(object sender, RoutedEventArgs e)
+        private async void g_button_click(object sender, RoutedEventArgs e)
         {
-
+            if (consumer != null)
+            {
+                await consumer.SetOnOffAsync(true);
+                await consumer.SetHueAsync(colors[4]);
+                if (!g_button.IsPressed)
+                {
+                    turn_off();
+                }
+            }
+            G.Play();
         }
 
-        private void a_button_click(object sender, RoutedEventArgs e)
+        private async void a_button_click(object sender, RoutedEventArgs e)
         {
-
+            if (consumer != null)
+            {
+                await consumer.SetOnOffAsync(true);
+                await consumer.SetHueAsync(colors[5]);
+                if (!a_button.IsPressed)
+                {
+                    turn_off();
+                }
+            }
+            A.Play();
         }
 
-        private void b_button_click(object sender, RoutedEventArgs e)
+        private async void b_button_click(object sender, RoutedEventArgs e)
         {
-
+            if (consumer != null)
+            {
+                await consumer.SetOnOffAsync(true);
+                await consumer.SetHueAsync(colors[6]);
+                if (!b_button.IsPressed)
+                {
+                    turn_off();
+                }
+            }
+            B.Play();
         }
 
     }
