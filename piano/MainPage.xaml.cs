@@ -1,7 +1,6 @@
 ﻿using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using System.Threading;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -17,9 +16,6 @@ namespace piano
         private LampHelper lampHelper;
         private bool lampFound = false;
 
-        private static Timer loopTimer;
-        private Button formButton;
-
 
         public MainPage()
         {
@@ -29,16 +25,8 @@ namespace piano
 
             lampHelper = new LampHelper();
             lampHelper.LampFound += LampHelper_LampFound;
-
-           // loopTimer = new Timer(button_C, null, 300, 300);
-           
-
         
         }
-
-
-
-
 
 
         private async void setMedia()
@@ -64,27 +52,17 @@ namespace piano
                 c_button.IsPressed.Equals(await lampHelper.GetOnOffAsync());
             }
         }
-
-        private void c_button_PointerPressed(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
-        {
-
-        }
-
-        private void c_button_PointerReleased(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
-        {
-
-        }
         
         //where the light is turned On
         private void button_C(object sender, RoutedEventArgs e)
         {
             if (lampFound)
             {
-                lampHelper.SetOnOffAsync(true);
+                //lampHelper.SetOnOffAsync(true);
                 beep.Play();
                 
                 //turns lamp off
-                //lampHelper.SetOnOffAsync(false);
+                lampHelper.SetOnOffAsync(false);
             } 
         }
 
