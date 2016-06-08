@@ -110,26 +110,62 @@ namespace piano
                 await consumer.SetOnOffAsync(false);
         }
 
+        /*
+         * Click event that plays appropriate piano tone 
+         * and changes the button and light color
+         * @param sender 
+         * @param e
+         */
         private async void c_button_click(object sender, RoutedEventArgs e)
         {
             if (consumer != null)
             {
                 //changes key color to match light color
-                var colored_key = new SolidColorBrush(Color.FromArgb(120, 255, 0, 0));
-                c_button.Background = colored_key;
+                //var colored_key = new SolidColorBrush(Color.FromArgb(120, 255, 0, 0));
+                //c_button.Background = colored_key;
+                set_color(c_button, 120, 255, 0, 0);
                 await consumer.SetOnOffAsync(true);
                 await consumer.SetHueAsync(colors[0]);
 
                 if (!c_button.IsPressed)
                 {
                     //returns the key color to original 
-                    var original_key = new SolidColorBrush(Color.FromArgb(120, 255, 255, 255));
-                    c_button.Background = original_key;
+                    //var original_key = new SolidColorBrush(Color.FromArgb(120, 255, 255, 255));
+                    //c_button.Background = original_key;
+                    restore_color(c_button, 120, 255, 255, 255);
                     turn_off(); 
                 }
             }
             C.Play();
         }
+
+        /*
+         * Sets the background of a button to a given color
+         * @param btn a button
+         * @param opac the opacity setting  
+         * @param r the red hue number
+         * @param g green hue number
+         * @param b blue hue number
+         * returns the new button background color
+         */
+        private void set_color(Button btn, Int32 opac, Int32 r, Int32 g, Int32 b){
+            btn.Background = new SolidColorBrush( Color.FromArgb(opac, r, g, b));
+        }
+
+        /*
+         * Returns the background of a button back to white
+         * @param btn a button
+         * @param opac the opacity setting
+         * @param r red hue number
+         * @param g green hue number
+         * @param b blue hue number
+         * returns the background color of a button to white - the original state
+         */
+        private void restore_color(Button btn, Int32 opac, Int32 r, Int32 g, Int32 b)
+        {
+            btn.Background = new SolidColorBrush( Color.FromArgb(opac, r, g, b));
+        }
+
 
         private async void d_button_click(object sender, RoutedEventArgs e)
         {
