@@ -26,7 +26,7 @@ namespace piano
         MediaElement A, B, B_b, C, C_s, D, E, E_b, F, F_s, G, G_s, C_h, C_h_s;
         uint[] colors;
         AllJoynBusAttachment busAttachment = null;
-        String lampId = "49ae9deae8c0e64011be3047b78183ac";
+        String lampId = "76882ed0b5209e35aa15ffba7a8de783";
 
         LampStateConsumer consumer = null;
         uint defaultSaturation = uint.MaxValue;
