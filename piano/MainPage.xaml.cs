@@ -12,6 +12,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Controls.Primitives;
+using System.Diagnostics;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -22,11 +23,13 @@ namespace piano
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        MediaElement A, B, B_b, C, C_s, C_h_s, D, E, E_b, F, F_s, G, G_s;
+        MediaElement A, B, B_b, C, C_s, D, E, E_b, F, F_s, G, G_s, C_h, C_h_s;
         uint[] colors;
         AllJoynBusAttachment busAttachment = null;
-        String lampId = "76882ed0b5209e35aa15ffba7a8de783";
+        String lampId = "d3cc1d629dda8d3df81fe0129bc2bf56";
         LampStateConsumer consumer = null;
+        uint defaultSaturation = uint.MaxValue;
+        uint defaultBrightness = 2028045600;
 
 
         public MainPage()
@@ -35,8 +38,8 @@ namespace piano
 
             this.setAllMedia();
 
-            colors = new uint[] { 0, 34, 51, 101, 153, 167, 204 };
-            for (int i = 0; i < 7; i++)
+            colors = new uint[] { 0, 34, 51, 101, 153, 175, 220, 25, 47, 135, 158, 186};
+            for (int i = 0; i < 12; i++)
             {
                 colors[i] = (uint)colors[i] * 14035841;
             }
@@ -55,7 +58,6 @@ namespace piano
             B_b = new MediaElement();
             C = new MediaElement();
             C_s = new MediaElement();
-            C_h_s = new MediaElement();
             D = new MediaElement();
             E = new MediaElement();
             E_b = new MediaElement();
@@ -63,6 +65,8 @@ namespace piano
             F_s = new MediaElement();
             G = new MediaElement();
             G_s = new MediaElement();
+            C_h = new MediaElement();
+            C_h_s = new MediaElement();
             Windows.Storage.StorageFolder folder = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFolderAsync("Assets");
             Windows.Storage.StorageFile file = await folder.GetFileAsync("A.wav");
             A.SetSource(await file.OpenAsync(Windows.Storage.FileAccessMode.Read), file.ContentType);
@@ -75,8 +79,6 @@ namespace piano
             file = await folder.GetFileAsync("C_s.wav");
             C_s.SetSource(await file.OpenAsync(Windows.Storage.FileAccessMode.Read), file.ContentType);
             file = await folder.GetFileAsync("D.wav");
-            C_h_s.SetSource(await file.OpenAsync(Windows.Storage.FileAccessMode.Read), file.ContentType);
-            file = await folder.GetFileAsync("C_h_s.wav");
             D.SetSource(await file.OpenAsync(Windows.Storage.FileAccessMode.Read), file.ContentType);
             file = await folder.GetFileAsync("E.wav");
             E.SetSource(await file.OpenAsync(Windows.Storage.FileAccessMode.Read), file.ContentType);
@@ -90,8 +92,12 @@ namespace piano
             G.SetSource(await file.OpenAsync(Windows.Storage.FileAccessMode.Read), file.ContentType);
             file = await folder.GetFileAsync("G_s.wav");
             G_s.SetSource(await file.OpenAsync(Windows.Storage.FileAccessMode.Read), file.ContentType);
+            file = await folder.GetFileAsync("C_h.wav");
+            C_h.SetSource(await file.OpenAsync(Windows.Storage.FileAccessMode.Read), file.ContentType);
+            file = await folder.GetFileAsync("C_h_s.wav");
+            C_h_s.SetSource(await file.OpenAsync(Windows.Storage.FileAccessMode.Read), file.ContentType);
         }
-
+        
         private async void Watcher_Added(LampStateWatcher sender, AllJoynServiceInfo args) // can only wait on async method inside async method
         {
             AllJoynAboutDataView aboutData = await AllJoynAboutDataView.GetDataBySessionPortAsync(args.UniqueName, busAttachment, args.SessionPort);
@@ -112,29 +118,6 @@ namespace piano
         }
 
         /*
-         * Click event that plays appropriate piano tone 
-         * and changes the button and light color
-         * @param sender 
-         * @param e
-         */
-        private async void c_button_click(object sender, RoutedEventArgs e)
-        {
-            if (consumer != null)
-            {              
-                set_color(c_button, 120, 255, 0, 0);
-                await consumer.SetOnOffAsync(true);
-                await consumer.SetHueAsync(colors[0]);
-
-                if (!c_button.IsPressed)
-                { 
-                    restore_color(c_button, 120, 255, 255, 255);
-                    turn_off(); 
-                }
-            }
-            C.Play();
-        }
-
-        /*
          * Sets the background of a button to a given color
          * @param btn a button
          * @param opac the opacity setting  
@@ -147,7 +130,6 @@ namespace piano
             var colored_key = new SolidColorBrush(Color.FromArgb(opac, r, g, b));
             btn.Background = colored_key;
         }
-
 
         /*
          * Returns the background of a button back to white
@@ -163,6 +145,50 @@ namespace piano
             btn.Background = new SolidColorBrush(Color.FromArgb(opac, r, g, b));
         }
 
+        /*
+         * Click event that plays appropriate piano tone 
+         * and changes the button and light color
+         * @param sender 
+         * @param e
+         */
+
+        private async void c_button_click(object sender, RoutedEventArgs e)
+        {
+            if (consumer != null)
+            {
+                set_color(c_button, 120, 255, 0, 0);
+                await consumer.SetSaturationAsync(defaultSaturation);
+                await consumer.SetBrightnessAsync(defaultBrightness);
+                await consumer.SetOnOffAsync(true);
+                await consumer.SetHueAsync(colors[0]);
+
+                if (!c_button.IsPressed)
+                {
+                    restore_color(c_button, 120, 255, 255, 255);
+                    turn_off();
+                }
+            }
+            C.Play();
+        }
+        private async void c_s_button_click(object sender, RoutedEventArgs e)
+        {
+            if (consumer != null)
+            {
+                set_color(c_s_button, 255, 255, 64, 0);
+                await consumer.SetSaturationAsync(defaultSaturation);
+                await consumer.SetBrightnessAsync(defaultBrightness);
+                await consumer.SetOnOffAsync(true);
+                await consumer.SetHueAsync(colors[7]);
+
+                if (!c_s_button.IsPressed)
+                {
+                    restore_color(c_s_button, 255, 0, 0, 0);
+                    turn_off();
+                }
+            }
+            C_s.Play();
+        }
+
         private async void d_button_click(object sender, RoutedEventArgs e)
         {
             if (consumer != null)
@@ -171,6 +197,8 @@ namespace piano
                 //d_button.Background = colored_key;
 
                 set_color(d_button, 120, 255, 128, 0);
+                await consumer.SetSaturationAsync(defaultSaturation);
+                await consumer.SetBrightnessAsync(defaultBrightness);
                 await consumer.SetOnOffAsync(true);
                 await consumer.SetHueAsync(colors[1]);
 
@@ -186,6 +214,25 @@ namespace piano
             D.Play();
         }
 
+        private async void e_b_button_click(object sender, RoutedEventArgs e)
+        {
+            if (consumer != null)
+            {
+                set_color(e_b_button, 255, 255, 192, 0);
+                await consumer.SetSaturationAsync(defaultSaturation);
+                await consumer.SetBrightnessAsync(defaultBrightness);
+                await consumer.SetOnOffAsync(true);
+                await consumer.SetHueAsync(colors[8]);
+
+                if (!e_b_button.IsPressed)
+                {
+                    restore_color(e_b_button, 255, 0, 0, 0);
+                    turn_off();
+                }
+            }
+            E_b.Play();
+        }
+
         private async void e_button_click(object sender, RoutedEventArgs e)
         {
             if (consumer != null)
@@ -193,6 +240,8 @@ namespace piano
                 //var colored_key = new SolidColorBrush(Color.FromArgb(120, 255, 255, 0));
                 //e_button.Background = colored_key;
                 set_color(e_button, 120, 255, 255, 0);
+                await consumer.SetSaturationAsync(defaultSaturation);
+                await consumer.SetBrightnessAsync(defaultBrightness);
                 await consumer.SetOnOffAsync(true);
                 await consumer.SetHueAsync(colors[2]);
 
@@ -214,6 +263,8 @@ namespace piano
                 //var colored_key = new SolidColorBrush(Color.FromArgb(120, 0, 255, 0));
                 //f_button.Background = colored_key;
                 set_color(f_button, 120, 0, 255, 0);
+                await consumer.SetSaturationAsync(defaultSaturation);
+                await consumer.SetBrightnessAsync(defaultBrightness);
                 await consumer.SetOnOffAsync(true);
                 await consumer.SetHueAsync(colors[3]);
 
@@ -228,6 +279,25 @@ namespace piano
             F.Play();
         }
 
+        private async void f_s_button_click(object sender, RoutedEventArgs e)
+        {
+            if (consumer != null)
+            {
+                set_color(f_s_button, 255, 0, 255, 128);
+                await consumer.SetSaturationAsync(defaultSaturation);
+                await consumer.SetBrightnessAsync(defaultBrightness);
+                await consumer.SetOnOffAsync(true);
+                await consumer.SetHueAsync(colors[9]);
+
+                if (!f_s_button.IsPressed)
+                {
+                    restore_color(f_s_button, 255, 0, 0, 0);
+                    turn_off();
+                }
+            }
+            F_s.Play();
+        }
+
         private async void g_button_click(object sender, RoutedEventArgs e)
         {
             if (consumer != null)
@@ -235,6 +305,8 @@ namespace piano
                 //var colored_key = new SolidColorBrush(Color.FromArgb(120, 0, 255, 255));
                 //g_button.Background = colored_key;
                 set_color(g_button, 120, 0, 255, 255);
+                await consumer.SetSaturationAsync(defaultSaturation);
+                await consumer.SetBrightnessAsync(defaultBrightness);
                 await consumer.SetOnOffAsync(true);
                 await consumer.SetHueAsync(colors[4]);
 
@@ -249,6 +321,25 @@ namespace piano
             G.Play();
         }
 
+        private async void g_s_button_click(object sender, RoutedEventArgs e)
+        {
+            if (consumer != null)
+            {
+                set_color(g_s_button, 255, 0, 128, 255);
+                await consumer.SetSaturationAsync(defaultSaturation);
+                await consumer.SetBrightnessAsync(defaultBrightness);
+                await consumer.SetOnOffAsync(true);
+                await consumer.SetHueAsync(colors[10]);
+
+                if (!g_s_button.IsPressed)
+                {
+                    restore_color(g_s_button, 255, 0, 0, 0);
+                    turn_off();
+                }
+            }
+            G_s.Play();
+        }
+
         private async void a_button_click(object sender, RoutedEventArgs e)
         {
             if (consumer != null)
@@ -256,6 +347,8 @@ namespace piano
                 //var colored_key = new SolidColorBrush(Color.FromArgb(120, 0, 0, 255));
                 //a_button.Background = colored_key;
                 set_color(a_button, 120, 0, 0, 255);
+                await consumer.SetSaturationAsync(defaultSaturation);
+                await consumer.SetBrightnessAsync(defaultBrightness);
                 await consumer.SetOnOffAsync(true);
                 await consumer.SetHueAsync(colors[5]);
 
@@ -270,6 +363,25 @@ namespace piano
             A.Play();
         }
 
+        private async void b_b_button_click(object sender, RoutedEventArgs e)
+        {
+            if (consumer != null)
+            {
+                set_color(b_b_button, 255, 51, 0, 255);
+                await consumer.SetSaturationAsync(defaultSaturation);
+                await consumer.SetBrightnessAsync(defaultBrightness);
+                await consumer.SetOnOffAsync(true);
+                await consumer.SetHueAsync(colors[11]);
+
+                if (!b_b_button.IsPressed)
+                {
+                    restore_color(b_b_button, 255, 0, 0, 0);
+                    turn_off();
+                }
+            }
+            B_b.Play();
+        }
+
         private async void b_button_click(object sender, RoutedEventArgs e)
         {
             if (consumer != null)
@@ -277,6 +389,8 @@ namespace piano
                 //var colored_key = new SolidColorBrush(Color.FromArgb(120, 102, 0, 255));
                 //b_button.Background = colored_key;
                 set_color(b_button, 120, 102, 0, 255);
+                await consumer.SetSaturationAsync(defaultSaturation);
+                await consumer.SetBrightnessAsync(defaultBrightness);
                 await consumer.SetOnOffAsync(true);
                 await consumer.SetHueAsync(colors[6]);
 
@@ -291,27 +405,46 @@ namespace piano
             B.Play();
         }
 
-
-        private async void ch_button_click(object sender, RoutedEventArgs e)
+        private async void c_h_button_click(object sender, RoutedEventArgs e)
         {
             if (consumer != null)
             {
                 //var colored_key = new SolidColorBrush(Color.FromArgb(120, 255, 0, 0));
                 //ch_button.Background = colored_key;
-                set_color(ch_button, 120, 255, 0, 0);
+                set_color(c_h_button, 120, 255, 0, 0);
+                await consumer.SetSaturationAsync(defaultSaturation);
+                await consumer.SetBrightnessAsync(defaultBrightness);
                 await consumer.SetOnOffAsync(true);
                 await consumer.SetHueAsync(colors[0]);
 
-                if (!ch_button.IsPressed)
+                if (!c_h_button.IsPressed)
                 {
                     //var original_key = new SolidColorBrush(Color.FromArgb(120, 255, 255, 255));
                     //ch_button.Background = original_key;
-                    restore_color(ch_button, 120, 255, 255, 255);
+                    restore_color(c_h_button, 120, 255, 255, 255);
+                    turn_off();
+                }
+            }
+            C_h.Play();
+        }
+        
+        private async void c_h_s_button_click(object sender, RoutedEventArgs e)
+        {
+            if (consumer != null)
+            {
+                set_color(c_h_s_button, 255, 255, 64, 0);
+                await consumer.SetSaturationAsync(defaultSaturation);
+                await consumer.SetBrightnessAsync(defaultBrightness);
+                await consumer.SetOnOffAsync(true);
+                await consumer.SetHueAsync(colors[7]);
+
+                if (!c_h_s_button.IsPressed)
+                {
+                    restore_color(c_h_s_button, 255, 0, 0, 0);
                     turn_off();
                 }
             }
             C_h_s.Play();
         }
-
     }
 }
