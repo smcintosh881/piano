@@ -25,7 +25,7 @@ namespace piano
         MediaElement A, B, B_b, C, C_s, C_h_s, D, E, E_b, F, F_s, G, G_s;
         uint[] colors;
         AllJoynBusAttachment busAttachment = null;
-        String lampId = "76882ed0b5209e35aa15ffba7a8de783";
+        String lampId = "3eb3073dcc98ec532af81ea929aa9462";
         LampStateConsumer consumer = null;
 
 
@@ -124,6 +124,7 @@ namespace piano
                 set_color(c_button, 120, 255, 0, 0);
                 await consumer.SetOnOffAsync(true);
                 await consumer.SetHueAsync(colors[0]);
+                
 
                 if (!c_button.IsPressed)
                 { 

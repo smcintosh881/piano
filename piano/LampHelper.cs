@@ -9,7 +9,7 @@ namespace piano
     {
         private AllJoynBusAttachment busAttachment = null;
         private LampStateConsumer consumer = null;
-        private string lampDeviceId = "76882ed0b5209e35aa15ffba7a8de783";
+        private string lampDeviceId = "3eb3073dcc98ec532af81ea929aa9462";
 
         public LampHelper()
         {

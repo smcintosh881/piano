@@ -1,0 +1,23 @@
+﻿light_c_1 = "3eb3073dcc98ec532af81ea929aa9462"
+light_c_2 = "b6afb5592fb6fcb7ab5d589c161168f4"
+
+light_d_1 = "9b9e31a71b2b62d78d14fcad1f451941"
+light_d_2 = "b6497b602aebd73b4eb72eb628fcb06d"
+
+light_e_1 = "76882ed0b5209e35aa15ffba7a8de783"
+light_e_2 = "d3cc1d629dda8d3df81fe0129bc2bf56"
+
+light_f_1 = "49ae9deae8c0e64011be3047b78183ac"
+light_f_2 = "9830c3a7bc62d771b20899ace42611db"
+
+light_g_1 = "ac1d99ede0ab11be80386048df3e06bc"
+light_g_2 = "356be4dd88ba0a43074d1cf9d2f3c646"
+
+light_a_1 = "5cd65cc2e054d3206c1e8c16b2d76d29"
+light_a_2 = "ee8455d57c16121d2b9d684582a87064"
+
+light_b_1 = "c6d70a563310dad2764d13513eabd689"
+light_b_2 = "db78dbbc949e2061dc33f9ab3c831e5b"
+
+light_ch_1 = "f653aa62825ea3500c4fde186d1eab0f"
+light_ch_2 = "7bf07d016da620730d7b8de03d71e246"
