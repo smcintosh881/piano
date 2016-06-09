@@ -160,11 +160,8 @@ namespace piano
          * */
         private void restore_color(RepeatButton btn, byte opac, byte r, byte g, byte b)
         {
-            btn.Background = new SolidColorBrush( Color.FromArgb(opac, r, g, b));
+            btn.Background = new SolidColorBrush(Color.FromArgb(opac, r, g, b));
         }
-
-
-
 
         private async void d_button_click(object sender, RoutedEventArgs e)
         {
@@ -173,7 +170,7 @@ namespace piano
                 //var colored_key = new SolidColorBrush(Color.FromArgb(120, 255, 128, 0));
                 //d_button.Background = colored_key;
 
-                set_color(c_button, 120, 255, 128, 0);
+                set_color(d_button, 120, 255, 128, 0);
                 await consumer.SetOnOffAsync(true);
                 await consumer.SetHueAsync(colors[1]);
 
@@ -181,7 +178,7 @@ namespace piano
                 {
                     //var original_key = new SolidColorBrush(Color.FromArgb(120, 255, 255, 255));
                     //d_button.Background = original_key;
-                    restore_color(c_button, 120, 255, 255, 255);
+                    restore_color(d_button, 120, 255, 255, 255);
                     turn_off();
                     
                 }
@@ -193,15 +190,17 @@ namespace piano
         {
             if (consumer != null)
             {
-                var colored_key = new SolidColorBrush(Color.FromArgb(120, 255, 255, 0));
-                e_button.Background = colored_key;
+                //var colored_key = new SolidColorBrush(Color.FromArgb(120, 255, 255, 0));
+                //e_button.Background = colored_key;
+                set_color(e_button, 120, 255, 255, 0);
                 await consumer.SetOnOffAsync(true);
                 await consumer.SetHueAsync(colors[2]);
 
                 if (!e_button.IsPressed)
                 {
-                    var original_key = new SolidColorBrush(Color.FromArgb(120, 255, 255, 255));
-                    e_button.Background = original_key;
+                    // var original_key = new SolidColorBrush(Color.FromArgb(120, 255, 255, 255));
+                    //e_button.Background = original_key;
+                    restore_color(e_button, 120, 255, 255, 255);
                     turn_off();
                 }
             }
@@ -212,15 +211,17 @@ namespace piano
         {
             if (consumer != null)
             {
-                var colored_key = new SolidColorBrush(Color.FromArgb(120, 0, 255, 0));
-                f_button.Background = colored_key;
+                //var colored_key = new SolidColorBrush(Color.FromArgb(120, 0, 255, 0));
+                //f_button.Background = colored_key;
+                set_color(f_button, 120, 0, 255, 0);
                 await consumer.SetOnOffAsync(true);
                 await consumer.SetHueAsync(colors[3]);
 
                 if (!f_button.IsPressed)
                 {
-                    var original_key = new SolidColorBrush(Color.FromArgb(120, 255, 255, 255));
-                    f_button.Background = original_key;
+                    //var original_key = new SolidColorBrush(Color.FromArgb(120, 255, 255, 255));
+                    //f_button.Background = original_key;
+                    restore_color(f_button, 120, 255, 255, 255);
                     turn_off();
                 }
             }
@@ -231,15 +232,17 @@ namespace piano
         {
             if (consumer != null)
             {
-                var colored_key = new SolidColorBrush(Color.FromArgb(120, 0, 255, 255));
-                g_button.Background = colored_key;
+                //var colored_key = new SolidColorBrush(Color.FromArgb(120, 0, 255, 255));
+                //g_button.Background = colored_key;
+                set_color(g_button, 120, 0, 255, 255);
                 await consumer.SetOnOffAsync(true);
                 await consumer.SetHueAsync(colors[4]);
 
                 if (!g_button.IsPressed)
                 {
-                    var original_key = new SolidColorBrush(Color.FromArgb(120, 255, 255, 255));
-                    g_button.Background = original_key;
+                    //var original_key = new SolidColorBrush(Color.FromArgb(120, 255, 255, 255));
+                    // g_button.Background = original_key;
+                    restore_color(g_button, 120, 255, 255, 255);
                     turn_off();
                 }
             }
@@ -250,15 +253,17 @@ namespace piano
         {
             if (consumer != null)
             {
-                var colored_key = new SolidColorBrush(Color.FromArgb(120, 0, 0, 255));
-                a_button.Background = colored_key;
+                //var colored_key = new SolidColorBrush(Color.FromArgb(120, 0, 0, 255));
+                //a_button.Background = colored_key;
+                set_color(a_button, 120, 0, 0, 255);
                 await consumer.SetOnOffAsync(true);
                 await consumer.SetHueAsync(colors[5]);
 
                 if (!a_button.IsPressed)
                 {
-                    var original_key = new SolidColorBrush(Color.FromArgb(120, 255, 255, 255));
-                    a_button.Background = original_key;
+                    //var original_key = new SolidColorBrush(Color.FromArgb(120, 255, 255, 255));
+                    //a_button.Background = original_key;
+                    restore_color(a_button, 120, 255, 255, 255);
                     turn_off();
                 }
             }
@@ -269,15 +274,17 @@ namespace piano
         {
             if (consumer != null)
             {
-                var colored_key = new SolidColorBrush(Color.FromArgb(120, 102, 0, 255));
-                b_button.Background = colored_key;
+                //var colored_key = new SolidColorBrush(Color.FromArgb(120, 102, 0, 255));
+                //b_button.Background = colored_key;
+                set_color(b_button, 120, 102, 0, 255);
                 await consumer.SetOnOffAsync(true);
                 await consumer.SetHueAsync(colors[6]);
 
                 if (!b_button.IsPressed)
                 {
-                    var original_key = new SolidColorBrush(Color.FromArgb(120, 255, 255, 255));
-                    b_button.Background = original_key;
+                    //var original_key = new SolidColorBrush(Color.FromArgb(120, 255, 255, 255));
+                    //b_button.Background = original_key;
+                    restore_color(b_button, 120, 255, 255, 255);
                     turn_off();
                 }
             }
@@ -289,15 +296,17 @@ namespace piano
         {
             if (consumer != null)
             {
-                var colored_key = new SolidColorBrush(Color.FromArgb(120, 255, 0, 0));
-                ch_button.Background = colored_key;
+                //var colored_key = new SolidColorBrush(Color.FromArgb(120, 255, 0, 0));
+                //ch_button.Background = colored_key;
+                set_color(ch_button, 120, 255, 0, 0);
                 await consumer.SetOnOffAsync(true);
                 await consumer.SetHueAsync(colors[0]);
 
                 if (!ch_button.IsPressed)
                 {
-                    var original_key = new SolidColorBrush(Color.FromArgb(120, 255, 255, 255));
-                    ch_button.Background = original_key;
+                    //var original_key = new SolidColorBrush(Color.FromArgb(120, 255, 255, 255));
+                    //ch_button.Background = original_key;
+                    restore_color(ch_button, 120, 255, 255, 255);
                     turn_off();
                 }
             }
