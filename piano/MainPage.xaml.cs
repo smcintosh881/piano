@@ -45,8 +45,7 @@ namespace piano
         String light_ch_2 = "7bf07d016da620730d7b8de03d71e246";
         uint defaultSaturation = uint.MaxValue;
         uint defaultBrightness = 2028045600;
-
-
+        
         public MainPage()
         {
             this.InitializeComponent();
