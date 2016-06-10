@@ -26,9 +26,23 @@ namespace piano
         MediaElement A, B, B_b, C, C_s, D, E, E_b, F, F_s, G, G_s, C_h, C_h_s;
         uint[] colors;
         AllJoynBusAttachment busAttachment = null;
-        String lampId = "49ae9deae8c0e64011be3047b78183ac";
-
-        LampStateConsumer consumer = null;
+        Dictionary<String, LampStateConsumer> consumers = new Dictionary<string, LampStateConsumer>();
+        String light_c_1 = "3eb3073dcc98ec532af81ea929aa9462";
+        String light_c_2 = "b6afb5592fb6fcb7ab5d589c161168f4";
+        String light_d_1 = "9b9e31a71b2b62d78d14fcad1f451941";
+        String light_d_2 = "b6497b602aebd73b4eb72eb628fcb06d";
+        String light_e_1 = "76882ed0b5209e35aa15ffba7a8de783";
+        String light_e_2 = "d3cc1d629dda8d3df81fe0129bc2bf56";
+        String light_f_1 = "49ae9deae8c0e64011be3047b78183ac";
+        String light_f_2 = "9830c3a7bc62d771b20899ace42611db";
+        String light_g_1 = "ac1d99ede0ab11be80386048df3e06bc";
+        String light_g_2 = "356be4dd88ba0a43074d1cf9d2f3c646";
+        String light_a_1 = "5cd65cc2e054d3206c1e8c16b2d76d29";
+        String light_a_2 = "ee8455d57c16121d2b9d684582a87064";
+        String light_b_1 = "c6d70a563310dad2764d13513eabd689";
+        String light_b_2 = "db78dbbc949e2061dc33f9ab3c831e5b";
+        String light_ch_1 = "f653aa62825ea3500c4fde186d1eab0f";
+        String light_ch_2 = "7bf07d016da620730d7b8de03d71e246";
         uint defaultSaturation = uint.MaxValue;
         uint defaultBrightness = 2028045600;
 
@@ -44,6 +58,23 @@ namespace piano
             {
                 colors[i] = (uint)colors[i] * 14035841;
             }
+
+            consumers.Add(light_c_1, null);
+            consumers.Add(light_c_2, null);
+            consumers.Add(light_d_1, null);
+            consumers.Add(light_d_2, null);
+            consumers.Add(light_e_1, null);
+            consumers.Add(light_e_2, null);
+            consumers.Add(light_f_1, null);
+            consumers.Add(light_f_2, null);
+            consumers.Add(light_g_1, null);
+            consumers.Add(light_g_2, null);
+            consumers.Add(light_a_1, null);
+            consumers.Add(light_a_2, null);
+            consumers.Add(light_b_1, null);
+            consumers.Add(light_b_2, null);
+            consumers.Add(light_ch_1, null);
+            consumers.Add(light_ch_2, null);
 
             busAttachment = new AllJoynBusAttachment();
             LampStateWatcher watcher = new LampStateWatcher(busAttachment);
@@ -102,20 +133,15 @@ namespace piano
         private async void Watcher_Added(LampStateWatcher sender, AllJoynServiceInfo args) // can only wait on async method inside async method
         {
             AllJoynAboutDataView aboutData = await AllJoynAboutDataView.GetDataBySessionPortAsync(args.UniqueName, busAttachment, args.SessionPort);
-            if (aboutData != null && !string.IsNullOrWhiteSpace(aboutData.DeviceId) && string.Equals(aboutData.DeviceId, lampId))
+            if (aboutData != null && !string.IsNullOrWhiteSpace(aboutData.DeviceId) && consumers.ContainsKey(aboutData.DeviceId)) //string.Equals(aboutData.DeviceId, lampId))
             {
                 LampStateJoinSessionResult result = await LampStateConsumer.JoinSessionAsync(args, sender);
-                if (result.Status == AllJoynStatus.Ok)
+                if (result.Status == AllJoynStatus.Ok && consumers[aboutData.DeviceId] == null)
                 {
-                    consumer = result.Consumer;
+                    //consumer = result.Consumer;
+                    consumers[aboutData.DeviceId] = result.Consumer;
                 }
             }
-        }
-
-        private async void turn_off()
-        {
-            if (consumer != null)
-                await consumer.SetOnOffAsync(false);
         }
 
         /*
@@ -153,269 +179,140 @@ namespace piano
          * @param e
          */
 
-        private async void c_button_click(object sender, RoutedEventArgs e)
+        private async void key_press_light_helper(LampStateConsumer consumer, LampStateConsumer consumer2, RepeatButton button, int color)
         {
-            if (consumer != null)
+            if (consumer != null && consumer2 != null)
             {
-                set_color(c_button, 120, 255, 0, 0);
                 await consumer.SetSaturationAsync(defaultSaturation);
+                await consumer2.SetSaturationAsync(defaultSaturation);
                 await consumer.SetBrightnessAsync(defaultBrightness);
+                await consumer2.SetBrightnessAsync(defaultBrightness);
                 await consumer.SetOnOffAsync(true);
-                await consumer.SetHueAsync(colors[0]);
-
-                if (!c_button.IsPressed)
+                await consumer2.SetOnOffAsync(true);
+                await consumer.SetHueAsync(colors[color]);
+                await consumer2.SetHueAsync(colors[color]);
+                if (!button.IsPressed)
                 {
-                    restore_color(c_button, 120, 255, 255, 255);
-                    turn_off();
+                    await consumer.SetOnOffAsync(false);
+                    await consumer2.SetOnOffAsync(false);
                 }
             }
+        }
+
+        private void key_press_button_helper(RepeatButton button, byte opac, byte r, byte g, byte b, Boolean whiteKey)
+        {
+            set_color(button, opac, r, g, b);
+            if (!button.IsPressed)
+            {
+                if (whiteKey)
+                    restore_color(button, 255, 255, 255, 255);
+                else
+                    restore_color(button, 255, 0, 0, 0);
+            }
+        }
+
+
+        private void c_button_click(object sender, RoutedEventArgs e)
+        {
+            key_press_light_helper(consumers[light_c_1], consumers[light_c_2], c_button, 0);
+            key_press_button_helper(c_button, 120, 255, 0, 0, true);
             C.Play();
         }
 
-        private async void c_s_button_click(object sender, RoutedEventArgs e)
+        private void c_s_button_click(object sender, RoutedEventArgs e)
         {
-            if (consumer != null)
-            {
-                set_color(c_s_button, 255, 255, 64, 0);
-                await consumer.SetSaturationAsync(defaultSaturation);
-                await consumer.SetBrightnessAsync(defaultBrightness);
-                await consumer.SetOnOffAsync(true);
-                await consumer.SetHueAsync(colors[7]);
-
-                if (!c_s_button.IsPressed)
-                {
-                    restore_color(c_s_button, 255, 0, 0, 0);
-                    turn_off();
-                }
-            }
+            key_press_light_helper(consumers[light_c_1], consumers[light_c_2], c_s_button, 7);
+            key_press_light_helper(consumers[light_d_1], consumers[light_d_2], c_s_button, 7);
+            key_press_button_helper(c_s_button, 255, 255, 64, 0, false);
             C_s.Play();
         }
-
-        private async void d_button_click(object sender, RoutedEventArgs e)
+        
+        private void d_button_click(object sender, RoutedEventArgs e)
         {
-            if (consumer != null)
-            {
-                set_color(d_button, 120, 255, 128, 0);
-                await consumer.SetSaturationAsync(defaultSaturation);
-                await consumer.SetBrightnessAsync(defaultBrightness);
-                await consumer.SetOnOffAsync(true);
-                await consumer.SetHueAsync(colors[1]);
-
-                if (!d_button.IsPressed)
-                {
-                    restore_color(d_button, 120, 255, 255, 255);
-                    turn_off();  
-                }
-            }
+            key_press_light_helper(consumers[light_d_1], consumers[light_d_2], d_button, 1);
+            key_press_button_helper(d_button, 120, 255, 128, 0, true);
             D.Play();
         }
 
-        private async void e_b_button_click(object sender, RoutedEventArgs e)
+        private void e_b_button_click(object sender, RoutedEventArgs e)
         {
-            if (consumer != null)
-            {
-                set_color(e_b_button, 255, 255, 192, 0);
-                await consumer.SetSaturationAsync(defaultSaturation);
-                await consumer.SetBrightnessAsync(defaultBrightness);
-                await consumer.SetOnOffAsync(true);
-                await consumer.SetHueAsync(colors[8]);
-
-                if (!e_b_button.IsPressed)
-                {
-                    restore_color(e_b_button, 255, 0, 0, 0);
-                    turn_off();
-                }
-            }
+            key_press_light_helper(consumers[light_d_1], consumers[light_d_2], e_b_button, 8);
+            key_press_light_helper(consumers[light_e_1], consumers[light_e_2], e_b_button, 8);
+            key_press_button_helper(e_b_button, 255, 255, 192, 0, false);
             E_b.Play();
         }
 
-        private async void e_button_click(object sender, RoutedEventArgs e)
+        private void e_button_click(object sender, RoutedEventArgs e)
         {
-            if (consumer != null)
-            {
-                set_color(e_button, 120, 255, 255, 0);
-                await consumer.SetSaturationAsync(defaultSaturation);
-                await consumer.SetBrightnessAsync(defaultBrightness);
-                await consumer.SetOnOffAsync(true);
-                await consumer.SetHueAsync(colors[2]);
-
-                if (!e_button.IsPressed)
-                {
-                    restore_color(e_button, 120, 255, 255, 255);
-                    turn_off();
-                }
-            }
+            key_press_light_helper(consumers[light_e_1], consumers[light_e_2], e_button, 2);
+            key_press_button_helper(e_button, 120, 255, 255, 0, true);
             E.Play();
         }
 
-        private async void f_button_click(object sender, RoutedEventArgs e)
+        private void f_button_click(object sender, RoutedEventArgs e)
         {
-            if (consumer != null)
-            {
-                set_color(f_button, 120, 0, 255, 0);
-                await consumer.SetSaturationAsync(defaultSaturation);
-                await consumer.SetBrightnessAsync(defaultBrightness);
-                await consumer.SetOnOffAsync(true);
-                await consumer.SetHueAsync(colors[3]);
-
-                if (!f_button.IsPressed)
-                {
-                    restore_color(f_button, 120, 255, 255, 255);
-                    turn_off();
-                }
-            }
+            key_press_light_helper(consumers[light_f_1], consumers[light_f_2], f_button, 3);
+            key_press_button_helper(f_button, 120, 0, 255, 0, true);
             F.Play();
         }
 
-        private async void f_s_button_click(object sender, RoutedEventArgs e)
+        private void f_s_button_click(object sender, RoutedEventArgs e)
         {
-            if (consumer != null)
-            {
-                set_color(f_s_button, 255, 0, 255, 128);
-                await consumer.SetSaturationAsync(defaultSaturation);
-                await consumer.SetBrightnessAsync(defaultBrightness);
-                await consumer.SetOnOffAsync(true);
-                await consumer.SetHueAsync(colors[9]);
-
-                if (!f_s_button.IsPressed)
-                {
-                    restore_color(f_s_button, 255, 0, 0, 0);
-                    turn_off();
-                }
-            }
+            key_press_light_helper(consumers[light_f_1], consumers[light_f_2], f_s_button, 9);
+            key_press_light_helper(consumers[light_g_1], consumers[light_g_2], f_s_button, 9);
+            key_press_button_helper(f_s_button, 255, 0, 255, 128, false);
             F_s.Play();
         }
 
-        private async void g_button_click(object sender, RoutedEventArgs e)
+        private void g_button_click(object sender, RoutedEventArgs e)
         {
-            if (consumer != null)
-            {
-                set_color(g_button, 120, 0, 255, 255);
-                await consumer.SetSaturationAsync(defaultSaturation);
-                await consumer.SetBrightnessAsync(defaultBrightness);
-                await consumer.SetOnOffAsync(true);
-                await consumer.SetHueAsync(colors[4]);
-
-                if (!g_button.IsPressed)
-                {
-                    restore_color(g_button, 120, 255, 255, 255);
-                    turn_off();
-                }
-            }
+            key_press_light_helper(consumers[light_g_1], consumers[light_g_2], g_button, 4);
+            key_press_button_helper(g_button, 120, 0, 255, 255, true);
             G.Play();
         }
 
-        private async void g_s_button_click(object sender, RoutedEventArgs e)
+        private void g_s_button_click(object sender, RoutedEventArgs e)
         {
-            if (consumer != null)
-            {
-                set_color(g_s_button, 255, 0, 128, 255);
-                await consumer.SetSaturationAsync(defaultSaturation);
-                await consumer.SetBrightnessAsync(defaultBrightness);
-                await consumer.SetOnOffAsync(true);
-                await consumer.SetHueAsync(colors[10]);
-
-                if (!g_s_button.IsPressed)
-                {
-                    restore_color(g_s_button, 255, 0, 0, 0);
-                    turn_off();
-                }
-            }
+            key_press_light_helper(consumers[light_g_1], consumers[light_g_2], g_s_button, 9);
+            key_press_light_helper(consumers[light_a_1], consumers[light_a_2], g_s_button, 9);
+            key_press_button_helper(g_s_button, 255, 0, 128, 255, false);
             G_s.Play();
         }
 
-        private async void a_button_click(object sender, RoutedEventArgs e)
+        private void a_button_click(object sender, RoutedEventArgs e)
         {
-            if (consumer != null)
-            {
-                set_color(a_button, 120, 0, 0, 255);
-                await consumer.SetSaturationAsync(defaultSaturation);
-                await consumer.SetBrightnessAsync(defaultBrightness);
-                await consumer.SetOnOffAsync(true);
-                await consumer.SetHueAsync(colors[5]);
-
-                if (!a_button.IsPressed)
-                {
-                    restore_color(a_button, 120, 255, 255, 255);
-                    turn_off();
-                }
-            }
+            key_press_light_helper(consumers[light_a_1], consumers[light_a_2], a_button, 5);
+            key_press_button_helper(a_button, 120, 0, 0, 255, true);
             A.Play();
         }
 
-        private async void b_b_button_click(object sender, RoutedEventArgs e)
+        private void b_b_button_click(object sender, RoutedEventArgs e)
         {
-            if (consumer != null)
-            {
-                set_color(b_b_button, 255, 51, 0, 255);
-                await consumer.SetSaturationAsync(defaultSaturation);
-                await consumer.SetBrightnessAsync(defaultBrightness);
-                await consumer.SetOnOffAsync(true);
-                await consumer.SetHueAsync(colors[11]);
-
-                if (!b_b_button.IsPressed)
-                {
-                    restore_color(b_b_button, 255, 0, 0, 0);
-                    turn_off();
-                }
-            }
+            key_press_light_helper(consumers[light_a_1], consumers[light_a_2], b_b_button, 10);
+            key_press_light_helper(consumers[light_b_1], consumers[light_b_2], b_b_button, 10);
+            key_press_button_helper(b_b_button, 255, 51, 0, 255, false);
             B_b.Play();
         }
 
-        private async void b_button_click(object sender, RoutedEventArgs e)
+        private void b_button_click(object sender, RoutedEventArgs e)
         {
-            if (consumer != null)
-            {
-                set_color(b_button, 120, 102, 0, 255);
-                await consumer.SetSaturationAsync(defaultSaturation);
-                await consumer.SetBrightnessAsync(defaultBrightness);
-                await consumer.SetOnOffAsync(true);
-                await consumer.SetHueAsync(colors[6]);
-
-                if (!b_button.IsPressed)
-                {
-                    restore_color(b_button, 120, 255, 255, 255);
-                    turn_off();
-                }
-            }
+            key_press_light_helper(consumers[light_b_1], consumers[light_b_2], b_button, 6);
+            key_press_button_helper(b_button, 120, 102, 0, 255, true);
             B.Play();
         }
 
-        private async void c_h_button_click(object sender, RoutedEventArgs e)
+        private void c_h_button_click(object sender, RoutedEventArgs e)
         {
-            if (consumer != null)
-            {
-                set_color(c_h_button, 120, 255, 0, 0);
-                await consumer.SetSaturationAsync(defaultSaturation);
-                await consumer.SetBrightnessAsync(defaultBrightness);
-                await consumer.SetOnOffAsync(true);
-                await consumer.SetHueAsync(colors[0]);
-
-                if (!c_h_button.IsPressed)
-                {
-                    restore_color(c_h_button, 120, 255, 255, 255);
-                    turn_off();
-                }
-            }
+            key_press_light_helper(consumers[light_ch_1], consumers[light_ch_2], c_h_button, 0);
+            key_press_button_helper(c_h_button, 120, 255, 0, 0, true);
             C_h.Play();
         }
         
-        private async void c_h_s_button_click(object sender, RoutedEventArgs e)
+        private void c_h_s_button_click(object sender, RoutedEventArgs e)
         {
-            if (consumer != null)
-            {
-                set_color(c_h_s_button, 255, 255, 64, 0);
-                await consumer.SetSaturationAsync(defaultSaturation);
-                await consumer.SetBrightnessAsync(defaultBrightness);
-                await consumer.SetOnOffAsync(true);
-                await consumer.SetHueAsync(colors[7]);
-
-                if (!c_h_s_button.IsPressed)
-                {
-                    restore_color(c_h_s_button, 255, 0, 0, 0);
-                    turn_off();
-                }
-            }
+            key_press_light_helper(consumers[light_c_1], consumers[light_c_2], c_h_s_button, 11);
+            key_press_light_helper(consumers[light_ch_1], consumers[light_ch_2], c_h_s_button, 11);
+            key_press_button_helper(c_h_s_button, 255, 255, 64, 0, false);
             C_h_s.Play();
         }
     }
