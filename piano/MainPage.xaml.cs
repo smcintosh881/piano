@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Controls.Primitives;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -305,6 +306,25 @@ namespace piano
             key_press_light_helper(consumers[light_ch_1], consumers[light_ch_2], c_h_s_button, 11);
             key_press_button_helper(c_h_s_button, 255, 255, 64, 0, false);
             C_h_s.Play();
+        }
+
+        private async void tutorial_button_Click(object sender, RoutedEventArgs e)
+        {
+            List<RepeatButton> maryHadALittleLamb = new List<RepeatButton>
+            {
+                e_button, d_button, c_button, d_button, e_button, e_button, e_button,
+                d_button, d_button, d_button, e_button, e_button, e_button,
+                e_button, d_button,c_button, d_button, e_button, e_button, e_button,
+                e_button, d_button, d_button, e_button, d_button, c_button
+            };
+            await Task.Delay(1500);
+            foreach (RepeatButton button in maryHadALittleLamb)
+            {
+                set_color(button, 255, 233, 5, 188);
+                await Task.Delay(1500);
+                restore_color(button, 255, 255, 255, 255);
+                await Task.Delay(100);
+            }
         }
     }
 }
