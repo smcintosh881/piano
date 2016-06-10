@@ -130,7 +130,7 @@ namespace piano
             C_h_s.SetSource(await file.OpenAsync(Windows.Storage.FileAccessMode.Read), file.ContentType);
         }
         
-        private async void Watcher_Added(LampStateWatcher sender, AllJoynServiceInfo args) // can only wait on async method inside async method
+        private async void Watcher_Added(LampStateWatcher sender, AllJoynServiceInfo args) 
         {
             AllJoynAboutDataView aboutData = await AllJoynAboutDataView.GetDataBySessionPortAsync(args.UniqueName, busAttachment, args.SessionPort);
             if (aboutData != null && !string.IsNullOrWhiteSpace(aboutData.DeviceId) && consumers.ContainsKey(aboutData.DeviceId)) //string.Equals(aboutData.DeviceId, lampId))
@@ -172,13 +172,6 @@ namespace piano
             btn.Background = new SolidColorBrush(Color.FromArgb(opac, r, g, b));
         }
 
-        /*
-         * Click event that plays appropriate piano tone 
-         * and changes the button and light color
-         * @param sender 
-         * @param e
-         */
-
         private async void key_press_light_helper(LampStateConsumer consumer, LampStateConsumer consumer2, RepeatButton button, int color)
         {
             if (consumer != null && consumer2 != null)
@@ -210,7 +203,6 @@ namespace piano
                     restore_color(button, 255, 0, 0, 0);
             }
         }
-
 
         private void c_button_click(object sender, RoutedEventArgs e)
         {
